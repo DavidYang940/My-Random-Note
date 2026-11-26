@@ -1,0 +1,1866 @@
+//Setter Getter:-------------------------------------------------------------------------------
+public int ObjectId
+    {
+        get => _objectId;
+        set
+        {
+            _objectIdText.text = value.ToString();
+            _objectId = value;
+        }
+    }
+public string username { get; set; }
+
+//Implement:
+public class EquipmentIcon : IItem
+    {
+        [SerializeField] private int _level = 0;
+        [SerializeField] private string _equipmentName;
+        [SerializeField] private EquipmentType _type;
+        [SerializeField] private List<EStat> EqStats;
+        [SerializeField] private bool IsEquip;
+        [TextArea(3, 10)] [SerializeField] private string _desc;
+
+        public int Level
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
+
+        public string EquipmentName
+        {
+            get { return _equipmentName; }
+            set { _equipmentName = value; }
+        }
+
+
+        public EquipmentType Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+
+        public string Desc
+        {
+            get { return _desc; }
+            set { _desc = value; }
+        }
+    }
+
+public static PlayerMScript instance { get; set; }
+
+//Interface:(With Variable)-------------------------------------------------------------------------------
+public interface IItem
+{
+    
+    int Level { set; get; }
+    string EquipmentName{ set; get; }
+    EquipmentType Type{ set; get; }
+    string Desc{ set; get; }
+    
+    void ItemPickup(GameObject item);
+}
+
+
+
+//Routine Loop:-------------------------------------------------------------------------------
+private IEnumerator CameraMove(Vector3 targetWorldPos, float duration, Action then)
+    {
+        var prevPos = Cam.transform.position;
+        for (float i = 0.0f; i < duration; i+=Time.deltaTime)
+        {
+            Cam.position = Vector3.Lerp(prevPos, targetWorldPos, i / duration) ;
+            yield return null;
+        }
+        
+        then?.Invoke();
+    }
+
+//List:-------------------------------------------------------------------------------
+m_DropOptions = new List<string> {"All"};
+if (!m_DropOptions.Contains(ListContent[i].area_name_translated))
+            {   
+                if(_debugMode)Debug.Log("Content Area: " + ListContent[i].area_name_translated);
+                
+                m_DropOptions.Add(ListContent[i].area_name_translated);
+            }
+
+
+List<string> countries = new List<string>();
+countries.Add("India");
+countries.Add("USA");
+countries.Add("UAE");
+countries.Add("Russia");
+
+if(countries.Contains("India"))
+  Debug.Log("Country found");
+else
+  Debug.Log("Country not found");
+
+var item = _mapRepository.Map.Find(x => x.MapScene.Equals(SceneManager.GetActiveScene().name));
+
+//MiscAction:-------------------------------------------------------------------------------
+public void SetUser(Action Response)
+    {
+        Response();
+    }
+
+//Ref change the public var
+void CalledOnceFunction(ref bool a,Action FunctionCallback)
+    {
+        if (!a)
+        {
+            FunctionCallback();
+            a = true;
+        }
+    }
+
+
+//parameters optional
+ CursorDetector();
+
+//Ref change the public var
+
+private void CursorDetector(Action OnTrue=null, Action OnFalse=null)
+    {
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        {
+            OnTrue();
+        }
+        else
+        {
+            OnFalse();
+        }
+    }
+
+/-------------------------------------------------------------------------------
+
+public Action SelectObjectFromScene;
+SelectObjectFromScene += () => SceneManager.SelectObj(node.OnSelectSceneObject);
+
+
+//-------------------------------------------------------------------------------
+UniRX/LinQ:
+
+this.UpdateAsObservable()
+            .Where(_ => Input.GetKey(KeyCode.A))
+            .Timestamp()
+            .Where(x=>x.Timestamp>_lastFired.AddSeconds(_fireRate))
+            .Subscribe(x => Debug.Log("press"));
+
+//Lambda expression-------------------------------------------------------------------------------
+// =>
+//before--------------
+
+public Action myDelegate;
+
+void Start()
+    {       
+        myDelegate = TestMethod;
+    }
+
+    void TestMethod()
+    {
+        Debug.Log("test");
+    }
+//after--------------
+
+public Action myDelegate;
+
+void Start()
+    {       
+        myDelegate = () =>
+        {
+            Debug.Log("test");
+        };
+    }
+
+    /*void TestMethod()
+    {
+        Debug.Log("test");
+    }*/
+//-------------------------------------------------------------------------------
+LinQ:
+//Linq is For Query DB
+using System.Linq;
+
+public string[] names = { "Angela", "Jared", "Soli", "Michael", "Jon", "JoAnn" };
+
+
+
+
+
+//Query syntax-------------------
+
+//Get more than one of selected item!!
+var item = from x in listItem
+           where x.itemType.Equals("Weapon")
+           select x;
+
+//Get List of selected item!!
+var theData = (
+            from data in listItem
+            where data.itemType.Equals(itemTypeList.captionText.text)
+            select data
+            ).ToList();
+
+//Get First of selected item!!
+var theData = (
+            from data in _localCells
+            where data.isCurrentlyColliding.Equals(true)
+            select data
+        ).FirstOrDefault();
+
+//Method syntax-------------------
+
+var item = listItem.Where(x => x.itemType.Equals("Weapon"));
+
+var theData = listItem.Where(data => data.itemType.Equals(itemTypeList.captionText.text)).ToList();
+
+Config.ListOfObjects.Items.FirstOrDefault(list => list.ObjectId == par.MainObjectId).GameObjectName
+
+//Plus Index
+
+public List<DialoguePool> DialogueDataRepository;
+var theData1 = DialogueDataRepository.Where(x=>x.tag==Tag)
+            .Select((DialogueData,index)=>new{data=DialogueData,In=index}).FirstOrDefault();
+_dialogueTrigger.dialogue = theData1.data.DialogueData.Dialogue;
+
+
+// NEW index
+int index = fruits.FindIndex(fruit => fruit.StartsWith("b"));
+
+string[] words1 = {"bot", "apple", "apricot"};
+
+        int minimalLength = words1
+            .Where(w => w.StartsWith("a"))
+            .Min(w => w.Length);
+        Debug.Log("minimalLength "+minimalLength);
+        
+        int[] numbers = {4, 7, 10};
+        int product = numbers.Aggregate(1, (interim, next) => interim * next);
+        Debug.Log("product "+product);
+
+bool hasApple = inventario.Any(x => x.name == "Apple");
+
+
+
+//2d matrix----------------------------------------------------------------
+
+[SerializeField] public GameObject[,] Matrixvar = new GameObject[8, 8];
+
+var theData = (
+                        from  data in Matrixvar.Cast<GameObject>()
+                        where data.transform.name.Equals( t.transform.name)
+                        select data
+                    ).FirstOrDefault();
+
+
+//Child Misc-------------------------------------------------------------------------------
+Transform[] children = new Transform[transform.childCount];	
+
+			for(int i=0; i< transform.childCount; i++){
+				children[i] = transform.GetChild(i);
+				children[i].gameObject.name = "point " + i;				
+			}
+
+			if (transform.childCount > 1){
+				_path.SetPoints(points, ups, isCircuit);
+			}
+
+
+foreach(Transform child in _groupLogContent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+//Child Misc2-------------------------------------------------------------------------------
+[ContextMenu("test1")]
+
+    public void test1()
+    {//get all
+        var temp = ButtonColl.transform.GetComponentsInChildren<Transform>();
+        foreach (Transform t in temp)
+        {
+           Debug.Log("Count:"+t.name);
+        }
+     //get surface   
+        foreach (Transform t in ButtonColl.transform)
+        {
+            Debug.Log("Count2:"+t.name);
+        }
+    }
+//Child Misc2-------------------------------------------------------------------------------
+if (!tObj.GetComponent<MeshCollider>())
+            {
+                // collider
+                tObj.AddComponent<MeshCollider>();
+            }
+
+//normalized-------------------------------------------------------------------------------
+var c = new Vector3(distX,distY,distZ).normalized;
+Mathf.Round(c.x)
+Mathf.Round(c.y)
+Mathf.Round(c.z)
+
+
+
+//ScriptableObject-------------------------------------------------------------------------------
+[CreateAssetMenu(fileName = "Obj", menuName = "Obj")]
+public class GetObj : ScriptableObject
+{
+    [System.Serializable]
+    class LocationData
+    {
+        public string id;
+        public string title;
+        public string language;
+        public string language_id;
+    }
+    [SerializeField] private LocationData[] _locationData;
+   
+    public void SetItems(string stringdata)
+    {
+        _locationData= JsonHelper1.FromJson<LocationData>("{\"Items\":" + stringdata + "}");
+        Debug.Log("Scrip"+stringdata);
+    }
+}
+
+//--------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "Repository History", menuName = "Repository/Repository History")]
+public class HistoryRepository :ScriptableObject//RuntimeSets.RuntimeSet<History>
+{
+    //public Log logs;
+    public List<History> History;
+    
+}
+
+[Serializable]
+public class History
+{
+    //public List<DataLog> Items;
+
+    public string materi_id;
+    public string menu_id;
+    public string chapter_id;
+    public int qustion_id;
+    public int area_id;
+    public int contentAreaIndex;
+    public int Scenario_Id;
+    public string Duration_taken;
+    public string Location;
+    public string Area;
+}
+
+//ScriptableObjectAdd-------------------------------------------------------------------------------
+[SerializeField] private HistoryRepository _historyRepository;
+
+HistoryData data = JsonUtility.FromJson<HistoryData>(json);
+            foreach (History item in data.History)
+            {
+                /*Debug.Log("Duration taken: " + item.Duration_taken);
+                Debug.Log("Location: " + item.Location);
+                Debug.Log("Area: " + item.Area);*/
+
+                _historyRepository.History.Add(new History
+                {
+                    materi_id = _dataVariable.materi_id,
+                    menu_id = _dataVariable.menu_id,
+                    chapter_id = _dataVariable.chapter_id,
+                    qustion_id = _dataVariable.qustion_id,
+                    area_id = _dataVariable.area_id,
+                    contentAreaIndex = _dataVariable.contentAreaIndex,
+                    Duration_taken = item.Duration_taken,
+                    Location = item.Location, // _dataVariable.chapterid
+                    Area = item.Area // _dataVariable.areaid
+                });
+
+               
+            }
+//ScriptableObjectClear-------------------------------------------------------------------------------
+RepositoryQuizQuestion.Items.Clear();
+
+
+
+//Unity Web-------------------------------------------------------------------------------
+_sUrl = "http://"+ _repositoryApp.GetHostIpAddress + "/simdiklat/api/v1/main/unity-transform/";
+
+WWWForm form = new WWWForm();
+        form.AddField("pos_x", v3CamLocalPos.x.ToString());
+        form.AddField("pos_y", v3CamLocalPos.y.ToString());
+        form.AddField("pos_z", v3CamLocalPos.z.ToString());
+        form.AddField("rot_x", v3CamLocalRot.x.ToString());
+        form.AddField("rot_y", v3CamLocalRot.y.ToString());
+        form.AddField("rot_z", "0");
+
+        UnityWebRequest www = UnityWebRequest.Post(_sUrl + sContentId, form);
+
+//async Web-----------------------------------------------
+
+private AsyncOperation _async;
+IEnumerator GetGoogleDrive(string fileId)
+    {
+
+
+_async = wwwVideo.SendWebRequest();
+while (!_async.isDone)
+                {
+ yield return null;
+}
+
+}
+
+//SendGET-------------------------------------------------------------------------------
+
+public List<RequestHeader> Header = new List<RequestHeader>();
+
+public void GetRepositoryQuizLevel(string url)
+    {
+        //GetToken();
+        SendGET(url,x=>_repositoryQuizLevel.SetItems(x, DataReceived),Header.ToDictionary(x=>x.key),
+            () => Callback());
+
+        void Callback()
+        {
+            
+        }
+    }
+
+public void SendGET(string url, Action<string> callback, Dictionary<string,RequestHeader> requestheader, Action callback2)
+    {
+        StartCoroutine(GetContentsCoroutine( url,callback,requestheader, callback2));
+    }
+
+    private IEnumerator GetContentsCoroutine(string url, Action<string> callback,Dictionary<string,RequestHeader> requestheader, Action callback2)
+    {
+        Debug.Log("UnityWebRequest.Get: " + url);
+        
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        {
+            Debug.Log("Current URL API: " + url);
+            www.method="GET";
+            if (requestheader != null)
+            {
+                foreach (var singleheader in requestheader)
+                {
+                    string requestName = singleheader.Key;
+                    string value = singleheader.Value.value;
+                    www.SetRequestHeader(requestName,value);
+                    
+                    //Debug.Log("Header Name: " + requestName + ", Header Value: " + value);
+                }
+            }
+            
+            yield return www.SendWebRequest();
+            
+            //Error handling
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("Error connecting to the server: " + www.error + ", " + $"{www.responseCode}");
+                /*if(www.isHttpError)
+                    Debug.Log($"{www.responseCode}");*/
+                
+                Debug.Log("Error API: " + url);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                callback.Invoke(www.downloadHandler.text);
+                //_dataReceived += 1;
+
+                if (debugMod)
+                {
+                    Debug.Log("Data Received: " + _dataReceived);
+                }
+
+                /*if (url == URL + "/vr_bahasa_v2/public/api/v1/area")
+                {
+                    if (debugMod)
+                    {
+                        Debug.Log("Contents Loaded");
+                    }
+
+                    _onContentsDataReceived?.Invoke();
+                }*/
+
+                if (_dataReceived == _dataRequired)
+                {
+                    if (debugMod)
+                    {
+                        Debug.Log("All data received");
+                    }
+                    
+                    _onAllDataReceived?.Invoke();
+                }
+                
+                callback2?.Invoke();
+            }
+        }
+    }
+
+//SendPost-------------------------------------------------------------------------------
+public List<RequestHeader> Header = new List<RequestHeader>();
+
+public void PostNilaiV2()
+    {
+        Debug.LogWarning("SENDING NILAI");
+
+        StartCoroutine(CoroutinePostNilaiV2());
+    }
+
+public IEnumerator CoroutinePostNilaiV2()
+    {
+        //yield return new WaitForSeconds(1);
+        if (UserId.ToString() == "")
+            Debug.Log("No UserID Found");
+                    
+                    var datatosend = new DataPostScenario
+                    {
+                        kelas=_kelas.text,
+                        tanggal=_repositoryLoginData.data.login_date,
+                        materi_id="47",
+                        chapter_id="1",
+                        user_id=_repositoryLoginData.data.id.ToString(),//91
+                        no_ujian="1",
+                        
+                        level_soal="1",
+                        jml_soal=_RepositoryLogAnswer.CorrectAnswer,
+                        jml_benar=_RepositoryLogAnswer.CorrectAnswer,
+                        nilai=_RepositoryLogAnswer.CorrectAnswer, 
+                        menit="1",
+                        detik="1"
+                    };
+
+                    string JSON = JsonUtility.ToJson(datatosend);
+
+                    Debug.Log(JSON);
+                    
+                    if (_sendPost)
+                        
+                        _sendPostMethod.SendPOST(url + _repositoryApiData.EnvApi.ReportQuizAPI, JSON,
+                            (x) => { Debug.Log("Callback : " + x); },
+                            Header.ToDictionary(x => x.key, x => x.value));
+
+            yield return null;
+    }
+
+
+//Asset Bundle-------------------------------------------------------------------------------
+using UnityEditor;
+using UnityEngine;
+using System.IO;
+
+public class CreateAssetBundles
+{
+	[MenuItem("Assets/Build AssetBundles")]
+ 	//[MenuItem("AssetBundles/Build AssetBundle")]
+	static void BuildAssetBundle()
+    {
+        // Specify the directory where the asset bundle will be saved.
+        string assetBundleDirectory = Application.streamingAssetsPath;
+        // Create the directory if it doesn't already exist.
+        if (!Directory.Exists(assetBundleDirectory))
+        {
+            Directory.CreateDirectory(assetBundleDirectory);
+        }
+        // Specify the name and path of the asset bundle.
+        string assetBundlePath = assetBundleDirectory + "/myAssetBundle";
+
+        // Collect all of the assets you want to include in the asset bundle.
+        Object[] assets = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
+
+        // Build the asset bundle.
+        //BuildPipeline.BuildAssetBundle(null, assets, assetBundlePath, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+        BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
+        // Refresh the editor to show the new asset bundle.
+        AssetDatabase.Refresh();
+        Debug.Log("Asset bundle created: " + assetBundlePath);
+    }
+}
+
+//LoadAsset Bundle-------------------------------------------------------------------------------
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.IO;
+public class LoadAssetBundles : MonoBehaviour
+{
+    public string bundleURL=Application.streamingAssetsPath;
+    public string assetName;
+    private void OnValidate()
+    {
+        bundleURL=Application.streamingAssetsPath;
+    }
+    IEnumerator Start () {
+            AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, assetName));
+            if (assetName == "") {
+                Instantiate(bundle.mainAsset);
+            } else {
+                Instantiate(bundle.LoadAsset(assetName));
+            }
+            bundle.Unload(false);
+        yield return null;
+    }
+}
+
+StartCoroutine(_loadAssetBundle.LoadingAssetBundleCorou(locationbundlepath, _listOfAssetBundlesLocation));
+
+
+ public IEnumerator LoadingAssetBundleCorou(string path,List<AssetBundle> assetBundleContainer,Action eventOnStart=null,Action eventOnComplete=null,Action eventOnFailed=null)
+    {
+        eventOnStart?.Invoke();
+        //unload all asset bundle
+        //AssetBundle.UnloadAllAssetBundles(false);
+        foreach (var VARIABLE in assetBundleContainer)
+        {
+            yield return VARIABLE.UnloadAsync(true);
+        }
+        assetBundleContainer.Clear();
+        
+        //request load asset bundle with async
+        var bundleLoadRequest  = AssetBundle.LoadFromFileAsync(path);
+
+        //wait it complete
+        yield return bundleLoadRequest;
+        
+        //get the asset bundle from request
+        assetBundleContainer.Add(bundleLoadRequest.assetBundle);
+        
+        //check theres asset bundle or no
+        if (assetBundleContainer.Count<=0||!assetBundleContainer[0])
+        {
+            Debug.LogError($"Failed to load AssetBundle with directory :\n{Path.Combine(Application.streamingAssetsPath,path)}");
+            eventOnFailed?.Invoke();
+            yield break;
+        }
+        
+        //called event after function complete
+        eventOnComplete?.Invoke();
+    }
+
+
+//New Load AssetBundle-------------------------------------------------------------------
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.IO;
+public class LoadAssetBundles : MonoBehaviour
+{
+    public string bundleURL=Application.streamingAssetsPath;
+    public string assetName;
+    private void OnValidate()
+    {
+        bundleURL=Application.streamingAssetsPath;
+    }
+    IEnumerator Start () {
+            AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, assetName));
+        
+        var bundleName = GetAssetBundleName(Path.Combine(Application.streamingAssetsPath, assetName));
+
+        Debug.Log("BundleName"+bundleName);
+        
+        var bundleobject = bundle.LoadAsset<GameObject>(bundleName);
+       
+        if (assetName == "") {
+            Instantiate(bundle.mainAsset);
+        } else {
+            Instantiate(bundleobject);
+        }
+        bundle.Unload(false);
+        
+        yield return null;
+    }
+
+//Important----
+private string GetAssetBundleName(string assetBundlePath)
+    {
+        var extensionpath = assetBundlePath + ".manifest";
+        using (StreamReader sr = new StreamReader(extensionpath))
+        {
+            string buffer;
+            while ((buffer = sr.ReadLine()) != null)
+            {
+                if (!buffer.Contains("Assets/")) continue;
+
+                buffer = Path.GetFileName(buffer);
+                return buffer;
+            }
+        }
+
+        return "";
+    }
+}
+
+
+//delegate-------------------------------------------------------------------------------
+//Fill an empty void OnInitialize
+
+public delegate void OnInitialize(string args);
+
+public OnInitialize onInitialize;
+public virtual void Initialize(string id = "")
+        {            
+            onInitialize?.Invoke(id);
+        }
+//-------------------------------------------------------------------------------
+public void SetDelegateForPanel(int indexPanel, ChapterPanel.OnInitialize onInitialize)
+        {
+            _allChapterPanels[indexPanel].onInitialize = onInitialize;
+        }
+//-------------------------------------------------------------------------------
+_webRequester.SetDelegateForPanel(2, args => {   
+	// call david initialize function
+            _sendGetMethod.GetRepositoryDataQuiz(args);
+        });
+
+//onClick.AddListener-------------------------------------------------------------------------------
+
+_scriptableGameObjectDataController.ChapterButton.GetComponentInChildren<Button>().onClick.AddListener(delegate
+            {
+                if (_debugMode) Debug.Log("Repository Chapter ID: " + sID);
+                
+                DataVariable.chapter_id = sID;
+                
+                OnClickChapter.Invoke();
+
+
+
+                //OnClickChapter.AddListener(()=>DataVariable.chapter_id = sChapterID);
+
+            });
+
+//Global Event-------------------------------------------------------------------------------
+//basicaly pass more than one variable in unity event into temporary placeholder
+//first define unity event with parameter
+public class GlobalEvents : MonoBehaviour
+{
+    public static GlobalEvents Instance;
+    public UnityEvent<string, int> ThirdPanelClick;
+}
+
+//add listener then invoke with the variable
+public GlobalEvents myEvent;
+public void GetTest(string url,int num)
+    {        
+        myEvent.ThirdPanelClick.AddListener(GetRepositoryExamQuestion);
+        myEvent.ThirdPanelClick.Invoke("",1);  
+    }
+//class to invoke with more than one parameter
+public void GetRepositoryExamQuestion(string materiId, int superuserId)
+    {
+        //GetServerURL();
+        GetExamQuestion(URL+_repositoryApiData.EnvApi.ExamQuestionAPI +"?materi_id=" + materiId + "&author_id=" + superuserId);
+    }
+//Global Event Advanced-------------------------------------------------------------------------------
+//first define unity class and inherit from unityevent with Serializable parameter
+
+//Set outside class
+[Serializable]
+public class SendQuizEvent : UnityEvent<SendQuizData>{}
+
+[Serializable]
+public class SendQuizData
+{
+    public string DateTime;
+    public string MateriId;
+    public string ChapterValue;
+    public string UserId;
+    public int NoOfQuestion;
+    public int NoOfCorrectAnswer;
+    public double Score;
+    public string QuizMinuteTaken;
+    public string QuizSecondTaken;
+}
+//-------------------------------------------------------------------------------
+// add event listener, set new , invoke with new variable
+public SendQuizEvent QuizEvent;
+
+//add in trigger
+public void setTest()
+    {        
+        //QuizEvent.AddListener(QuizGlobalEvent);
+        SendQuizData QuizEventD = new SendQuizData();
+        QuizEvent.Invoke(QuizEventD);
+    }
+
+//add in function
+public void QuizGlobalEvent(SendQuizData QuizEventD)
+    {        
+        PostQuestionScore(QuizEventD.DateTime, QuizEventD.MateriId, QuizEventD.ChapterValue, QuizEventD.UserId,QuizEventD.NoOfQuestion, QuizEventD.NoOfCorrectAnswer, QuizEventD.Score, QuizEventD.QuizMinuteTaken, QuizEventD.QuizSecondTaken);     
+    }
+
+//-------------------------------------------------------------------------------
+// Mirror
+		//[Command(requiresAuthority = false)]
+		[Command]//Client To serverWorld
+		void SenTServ()
+		{
+		//Trigger To server first
+			Debug.Log("To Server");
+			GeFServ();
+		}
+
+		[ClientRpc]//Server To Client
+		void GeFServ()
+		{
+			//Run Player Script here
+
+			Debug.Log("from Server");
+		}
+//get LocalPlayer
+playerCharacter = Mirror.NetworkClient.localPlayer.gameObject.GetComponent<CharacterBehaviour>();//
+
+[ServerCallback]//Server to server
+		private void OnCollisionEnter (Collision other)
+		{
+			//Debug.Log("trigger");
+			if (other.gameObject.GetComponent<Projectile>() != null)
+			{
+				Debug.Log("Projectile"+other.gameObject.name);
+				--health;
+				if (health == 0)
+					//NetworkClient.Disconnect();
+					//NetworkServer.Destroy(gameObject);
+					NetworkManager.singleton.StopClient();
+			}
+		}
+
+
+//OnSender-----------------------------
+void Awake()
+    {
+        Mirror.ConnectedToServer += OnClientConnected;
+    }
+ private void OnClientConnected(NetworkConnection conn)
+    {
+        if(!Config.IsSuperuser)
+        {
+            var packet = new UserDetailPacket() {Nama = RepositoryloginData.nama, Username = RepositoryloginData.username};
+            NetworkClient.Send(packet);
+        }
+    }
+//On Receiver-----------------------------
+public void RegisterServer()
+    {        
+        NetworkServer.ReplaceHandler<UserDetailPacket>(OnReceivedUserDetailPacket);
+    }
+
+ private void OnReceivedUserDetailPacket(NetworkConnection conn, UserDetailPacket packet)
+    {
+        Debug.Log("Received User Detail: "+packet.Nama);
+        _userListManager.AddUser(packet.Nama, packet.Username, conn);
+    }
+//-------------------------------------------------------------------------------
+// Mirror2 Packet(WIP(Position May Not Work!!!))
+
+// SetPacket-----------------------------
+
+/// <summary>
+/// Held Object Positions
+/// </summary>
+public struct HeldObjectPositionsPacket : NetworkMessage
+{
+    public string GameObjectName;
+    public Vector3 Position;
+    public Vector3 LocalPosition;
+    public Quaternion Rotation;
+    public Quaternion LocalRotation;
+}
+
+/// <summary>
+/// Held Object Positions for client
+/// </summary>
+public struct HeldObjectPositionsPacketForClient : NetworkMessage
+{
+    public string GameObjectName;
+    public Vector3 Position;
+    public Vector3 LocalPosition;
+    public Quaternion Rotation;
+    public Quaternion LocalRotation;
+    public bool IsHeld;
+
+    public static explicit operator HeldObjectPositionsPacketForClient(HeldObjectPositionsPacket v)
+    {
+        var data = new HeldObjectPositionsPacketForClient();
+        data.GameObjectName = v.GameObjectName;
+        data.Position = v.Position;
+        data.LocalPosition = v.LocalPosition;
+        data.Rotation = v.Rotation;
+        data.LocalRotation = v.LocalRotation;
+        return data;
+    }
+}
+
+// Client1-----------------------------
+HeldObjectPositionsPacket objectPacket = new HeldObjectPositionsPacket();
+
+ public void UpdateLastPositions(GameObject target)
+    {
+        if (target == null)
+            return;
+
+        objectPacket.GameObjectName = target.name;
+        objectPacket.Position = target.transform.position;
+        objectPacket.Rotation = target.transform.rotation;
+        objectPacket.LocalPosition = target.transform.localPosition;
+        objectPacket.LocalRotation = target.transform.localRotation;
+        NetworkClient.Send(objectPacket);
+    }
+
+
+/// <summary>
+    /// Update Right Hand VR Positions
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator UpdateRightHandVRPositions()
+    {
+
+        while (_rightHandGrabSomething)
+        {
+            yield return null;
+            if (RightHand.currentAttachedObject != null)
+            {
+                objectPacket.GameObjectName = RightHand.currentAttachedObject.name;
+                objectPacket.Position = RightHand.currentAttachedObject.transform.position;
+                objectPacket.Rotation = RightHand.currentAttachedObject.transform.rotation;
+                objectPacket.LocalPosition = RightHand.currentAttachedObject.transform.localPosition;
+                objectPacket.LocalRotation = RightHand.currentAttachedObject.transform.localRotation;
+//Send Data
+                NetworkClient.Send(objectPacket);
+                yield return new WaitForSeconds(SyncInverval);
+            }
+        }
+    }
+// Server -----------------------------
+
+ private void OnEnable()
+    {
+        #region Server        
+        NetworkServer.RegisterHandler<HeldObjectPositionsPacket>(OnServerReceivedHeldObjectPosition);       
+        #endregion
+
+        #region Client       
+        NetworkClient.RegisterHandler<HeldObjectPositionsPacketForClient>(ClientReceivedHeldObjectPosition);      
+        #endregion
+    }
+
+/// <summary>
+    /// Server Received Held Object State
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="heldObjectPacket"></param>
+    public void OnServerReceivedHeldObjectState(NetworkConnectionToClient client, HeldObjectStatePacket heldObjectPacket)
+    {
+
+
+/// <summary>
+    /// Server Received Held Object Position
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="heldObjectPacket"></param>
+    public void OnServerReceivedHeldObjectPosition(NetworkConnectionToClient client,
+        HeldObjectPositionsPacket heldObjectPacket)
+    {
+        var currentStudent =
+            DisplayAllUser.Instance.OnlineUserList.FirstOrDefault(x => x.connId == client.connectionId);
+
+        if (currentStudent is null)
+            return;
+
+        var roomData = currentStudent.roomData;
+        if (roomData is null)
+            return;
+
+        var students = roomData.studentList.ToList();
+
+        students.Remove(currentStudent);
+
+        var packetForClient = (HeldObjectPositionsPacketForClient)heldObjectPacket;
+        foreach (var student in students)
+        {
+            student.conn.Send(packetForClient);
+        }
+    }
+
+
+
+//Client 2 (Share Listener With Server)-----------------------------
+
+ private void OnEnable()
+    {
+        #region Server        
+        NetworkServer.RegisterHandler<HeldObjectPositionsPacket>(OnServerReceivedHeldObjectPosition);       
+        #endregion
+
+        #region Client       
+        NetworkClient.RegisterHandler<HeldObjectPositionsPacketForClient>(ClientReceivedHeldObjectPosition);      
+        #endregion
+    }
+
+/// <summary>
+    /// Client Received Held Object Position
+    /// </summary>
+    /// <param name="positionsPacket"></param>
+    public void ClientReceivedHeldObjectPosition(HeldObjectPositionsPacketForClient positionsPacket)
+    {
+        _scenarioObjectManager.UpdateObjectPositionAndRotation(positionsPacket.GameObjectName, positionsPacket.Position, positionsPacket.Rotation);
+    }
+
+/// <summary>
+    /// Client Received Held Object State
+    /// </summary>
+    /// <param name="client"></param>
+    private void ClientReceivedHeldObjectState(HeldObjectStatePacketForClient client)
+    {
+        var targetGameObject = _scenarioObjectManager.GetGameObjectFromName(client.GameObjectName);
+        if (targetGameObject is null)
+            return;
+
+        if (targetGameObject.TryGetComponent(out InteractableHelper helper))
+        {
+            helper.IsInteracted = client.IsHeld;
+        }
+
+        if (string.IsNullOrEmpty(client.ParentName))
+        {
+            targetGameObject.transform.parent = null;
+        }
+        else
+        {
+            var targetParent = GameObject.Find(client.ParentName);
+            if (targetParent is null)
+                return;
+
+            targetParent.transform.SetParent(targetParent.transform);
+        }
+    }
+
+//-------------------------------------------------------------------------------
+// Mirror2 Position(Simplified)
+
+
+ public bool isHolding;
+
+ public Action OnAttachedToHandEvent;
+    public Action OnDetachedFromHandEvent;
+    public Action OnHandAttachedUpdate;
+
+protected override void HandAttachedUpdate(Hand hand)
+    {
+        base.HandAttachedUpdate(hand);
+       
+        newPosition = this.transform.position;
+        
+
+        SenTServTest(this.transform.position, this.transform.rotation //hand
+        );
+       
+       
+    }
+
+ [Command(requiresAuthority = false)] //Client To serverWorld
+    void SenTServTest(Vector3 a, Quaternion b
+    )
+    {  
+        transform.position = a;
+        transform.rotation = b;
+        //Trigger To server first
+        Debug.Log("To Server");
+        GeFServTest(a, b //hand
+        );
+        OnHandAttachedUpdate?.Invoke();
+        
+    }
+
+    [ClientRpc] //Server To Client
+    void GeFServTest(Vector3 a, Quaternion b //Hand hand
+    )
+    {
+        transform.position = a;
+        transform.rotation = b;
+        //Run Player Script here        
+        Debug.Log("from Server");
+        OnHandAttachedUpdate?.Invoke();
+    }
+//Set isHolding-----------------------------
+[Command(requiresAuthority = false)] //Client To serverWorld
+    void isHoldingSenTServ( bool isHoldingServ
+    )
+    {
+        isHolding = isHoldingServ;
+
+        if (isHolding)
+        {
+            OnAttachedToHandEvent?.Invoke();
+        }
+        else
+        {
+            OnDetachedFromHandEvent?.Invoke();
+        }
+
+
+        GeFServ(isHoldingServ);
+    }
+
+    [ClientRpc] //Server To Client
+    void GeFServ(bool isHoldingServ
+    )
+    {
+        isHolding = isHoldingServ;
+        if (isHolding)
+        {
+            OnAttachedToHandEvent?.Invoke();
+        }
+        else
+        {
+            OnDetachedFromHandEvent?.Invoke();
+        }
+    }
+
+
+//Editor-------------------------------------------------------------------------------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+[CustomEditor(typeof(LookAnimatorOneClick))]
+public class LookAnimatorCorrectionEditor : UnityEditor.Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        LookAnimatorOneClick script = (LookAnimatorOneClick)target;
+
+        GUILayout.Space(10);
+        
+        if(GUILayout.Button("Apply"))
+        {
+            script.BoneCorrection();
+        }
+        
+        GUILayout.Space(10);
+        
+        if(GUILayout.Button("Done"))
+        {
+            script.Finished();
+        }
+        
+        /*if(GUILayout.Button("Assign Conversation Prefabs to NPCs"))
+        {
+            script.AssignConversationPrefabs();
+        }*/
+        /*
+
+        if(GUILayout.Button("Duplicate and Assign New Lightmaps"))
+        {
+            script.FixLightmaps();
+        }*/
+
+	AssetDatabase.FindAssets(_animator.runtimeAnimatorController.name);
+    }
+}
+
+//OnGUI()-------------------------------------------------------------------------------
+void OnGUI()
+		{
+			if ( showInstructions )
+			{
+				GUI.Label( new Rect( 10.0f, 10.0f, 600.0f, 400.0f ),
+					"WASD EQ/Arrow Keys to translate the camera\n" +
+					"Right mouse click to rotate the camera\n" +
+					"Left mouse click for standard interactions.\n" );
+			}
+		}
+
+//Enviroment Variable-------------------------------------------------------------------------------
+string[] args = System.Environment.GetCommandLineArgs ();
+
+for (int i = 0; i < args.Length; i++)
+        {
+            Debug.Log("ARG " + i + ": " + args[i]);
+            if (args[i] == "-username")
+            {
+                _repositoryLoginData.data.Username = args[i + 1];
+            }
+
+            if (args[i] == "-id")
+            {
+                string s;
+
+                s = args[i + 1];
+
+                _repositoryLoginData.data.id = int.Parse(s);
+            }
+
+            if (args[i] == "-language_id")
+            {
+                _repositoryLoginData.data.Language_Id = args[i + 1];
+            }
+        }
+//IsAnyPrefabInstanceRoot---------------------------------------
+string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
+ if (path != "" && PrefabUtility.IsAnyPrefabInstanceRoot(_areaPrefab.gameObject))
+        {}
+
+if (PrefabUtility.IsAnyPrefabInstanceRoot(_gameObject))
+                {
+                    PrefabUtility.UnpackPrefabInstance(_gameObject, PrefabUnpackMode.OutermostRoot,
+                        InteractionMode.AutomatedAction);
+                }
+
+
+
+//FileSystem-------------------------------------------------------------------------------
+ if (System.IO.File.Exists(_tempPath + "/TVideo.mp4" + ".Temp"))
+            {
+                AppendAllBytes(_tempPath + "/TVideo.mp4" + ".Temp", wwwVideo.downloadHandler.data);
+            }
+            else
+            {
+                System.IO.File.WriteAllBytes(_tempPath + "/TVideo.mp4" + ".Temp", wwwVideo.downloadHandler.data);
+            }
+
+            FileUtil.CopyFileOrDirectory(_tempPath + "/TVideo.mp4" + ".Temp", Path + "/" + TestName + "." + ExtName);
+            yield return null;
+            FileUtil.DeleteFileOrDirectory(_tempPath + "/TVideo.mp4" + ".Temp");
+
+//Quaternion Rotation-------------------------------------------------------------------------------
+Quaternion.Euler(footRotOffset);
+Vector3 SurfaceNormal = Vector3.forward;
+if (Physics.Raycast(ray, out RaycastHit info3, rayLength, terrainLayer.value))
+        {
+ Vector3 normal = info3.normal+SurfaceNormal;
+Quaternion.LookRotation(normal,(Vector3.ProjectOnPlane( body.forward, normal).normalized));
+}
+
+Debug.Log("Vector3.Angle"+Quaternion.FromToRotation(normal, Vector3.up).eulerAngles);
+
+//Type Parameter <T>-------------------------------------------------------------------------------
+
+
+//class1
+GetMethod<DataChapter>(urlChapter, x => {_repositoryChapter.SetItems(x, DataReceived);});
+
+//class2
+private void GetMethod<T>()
+    {        
+                    T[] arrData = JsonHelper.getJsonArray<T>(x); 
+if (arrData == null)
+                    {}
+                  
+    }
+//-------------------------------------------------------------------------------
+
+private void EnqueueMethod<T>(List<T> Temp1,out Queue<T> result)
+    {
+        Queue<T> SentenceTemp1 = new Queue<T>();
+        foreach (T temp in Temp1)
+        {
+            SentenceTemp1.Enqueue(temp);
+        }
+        result = SentenceTemp1;
+    }
+
+
+private void DequeueMethod<T>(Queue<T> SentenceTemp1,out T result)
+    {
+        result=SentenceTemp1.Dequeue();       
+    }
+
+//-------------------------------------------------------------------------------
+public static void LoadLocal<T>(Action<T> action = null) where T : class
+    {
+        _onload = () => _loadLocal(action);
+    }
+//-------------------------------------------------------------------------------
+private void spawnButtonTest<TClass,TScript>(List<TClass> Temp1)
+    {}
+//-------------------------------------------------------------------------------
+// Allow return null
+public class ItemManager<T> : MonoBehaviour where T : Item // Assuming 'Item' is a base class for your items
+{
+    public List<T> availableItems;
+
+    public T GetRandomItem()
+    {
+        if (availableItems.Count > 0)
+        {
+            int randomIndex = Random.Range(0, availableItems.Count);
+            return availableItems[randomIndex];
+        }
+        return null;
+    }
+}
+
+public class OxygenSaturationStep : ItemManager<OxygenSaturationStep> {    }
+
+//Abstact Class-------------------------------------------------------------------------------
+public abstract class StepScenario<T> : MonoBehaviour, IStepScenario where T : StepScenario<T>
+{
+    private static T _step;
+    public static T GetStep => _step;
+
+    public virtual void Awake()
+    {
+        if (!_step)
+            _step = (T)this;
+    }
+
+    public abstract void Execute(IStepParameter parameter, Action onStepComplete);
+    public abstract bool IsValidParameter(IStepParameter parameter);
+    public abstract void StopScenario();
+    
+    public abstract string ScriptName();
+    public abstract IStepParameter GetStepParameter();
+}
+
+public interface IStepScenario
+{
+    
+    void Execute(IStepParameter parameter, Action onStepComplete);
+    bool IsValidParameter(IStepParameter parameter);
+    void StopScenario();
+    
+    string ScriptName();
+    IStepParameter GetStepParameter();
+}
+
+public interface IStepParameter
+{
+    void DeserializeParameter(string rawParameter);
+}
+
+//PlayerPrefs-------------------------------------------------------------------------------
+
+void Awake()
+    {
+        //PlayerPrefs.SetString ("LastExitName", null);
+        //Debug.Log (PlayerPrefs.GetString ("LastExitName"));
+        //PlayerPrefs.GetString ("LastExitName") == LastExitName
+    }
+
+
+//Task2-------------------------------------------------------------------------------
+ public void AdvertiseServer()
+        {
+            
+            _ = ServerListenAsync();
+        }
+
+        public async Task ServerListenAsync()
+        {
+            while (true)
+            {
+                try
+                {
+                    await ReceiveRequestAsync(serverUdpClient);
+                }
+                catch (ObjectDisposedException)
+                {                    
+                    break;
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        async Task ReceiveRequestAsync(UdpClient udpClient)
+        {
+           
+        }
+
+//Parent Child Adv:-------------------------------------------------------------------------------
+//Parent---------
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Pool;
+
+public class MenuUI<T,U,V> : MonoBehaviour where T : MenuManager<U> where U : IData where V : ButtonScript
+{
+    [SerializeField] private T _menuManager;
+    [Space(10)]
+    [Header("UI")]
+    [SerializeField] private V _prefabButtonScript;
+    [SerializeField] private Transform _parentButton;
+    
+    private ObjectPool<V> _objectPool;
+    public void InitializeObjectPool()
+    {
+        _objectPool = new ObjectPool<V>(createFunc: () => Instantiate(_prefabButtonScript, _parentButton),
+            actionOnGet: obj =>
+            {
+                obj.gameObject.SetActive(true);
+                obj.transform.SetAsLastSibling();
+            },
+            actionOnRelease: obj => obj.gameObject.SetActive(false),
+            actionOnDestroy: Destroy,
+            collectionCheck: false);
+    }
+    
+    private Dictionary<int, V> _listButtonScript=new Dictionary<int, V>();
+    
+    public void ClearListButton()
+    {
+        foreach (var VARIABLE in _listButtonScript)
+        {
+            _objectPool.Release(VARIABLE.Value);
+        }
+        _listButtonScript.Clear();
+    }
+    [SerializeField] protected UnityEvent<int> _selectedDataEvent;
+    
+    private void Awake()
+    {
+        InitializeObjectPool();
+    }
+    
+    /// <summary>
+    /// update the showed button if theres no button will instantiate
+    /// </summary>
+    public void SetShowedButton()
+    {
+        foreach (var VARIABLE in _menuManager.GetShowedData)
+        {
+            if (_listButtonScript.TryGetValue(VARIABLE.ID, out V result))
+            {
+                result.gameObject.SetActive(true);
+            }
+            else
+            {
+                result = InstantiateButton(VARIABLE);
+                _listButtonScript.Add(VARIABLE.ID,result);
+            }
+        }
+
+        var temp = _menuManager.GetAllData().Except(_menuManager.GetShowedData);
+
+        foreach (var VARIABLE in temp)
+        {
+            _listButtonScript[VARIABLE.ID].gameObject.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// instantiate button and set data to button
+    /// </summary>
+    /// <param name="data"></param>
+    public V InstantiateButton(U data)
+    {
+        V buttonscript = _objectPool.Get();
+        buttonscript.SetData(data);
+        buttonscript.SetupUI();
+        return buttonscript;
+    }
+}
+//Child---------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ReportMenuUI : MenuUI<ReportMenuManager,ReportData,ReportButtonScript>
+{
+    private void Start()
+    {
+        ReportButtonScript.AddSelectReportAction(x =>
+        {
+            _selectedDataEvent?.Invoke(x);
+        });
+    }
+}
+
+//Child2---------
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ModuleMenuUI : MenuUI<ModuleMenuManager,ModuleData,ModuleButtonScript> 
+{
+    private void Start()
+    {
+        ModuleButtonScript.AddSelectModuleAction((s) => { _selectedDataEvent?.Invoke(s); });
+    }
+}
+
+
+
+//Simple Interactable:-------------------------------------------------------------------------------
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// Click Object From Camera
+/// </summary>
+public class InteractableObj : MonoBehaviour
+{
+
+    public Action OnClick;
+
+    
+    private void OnMouseUp()
+    {
+        Debug.Log("InteractableObj");
+        if(!Input.GetMouseButtonUp(0))
+            return;
+        
+        OnClick?.Invoke();
+        Debug.Log(gameObject.name);
+    }
+}
+
+//Dynamic Variable:-------------------------------------------------------------------------------
+using System.Reflection;
+
+
+[ContextMenu("SetupUI()")]
+    public override void SetupUI()
+    {
+        Debug.Log("david SetupUI()");
+        if (VideoProperty != null)
+        {
+            SavePattern savePatt = new SavePattern();
+            PropertyInfo[] properties = typeof(SavePattern).GetProperties();
+            Debug.Log("david0:"+ properties.Length+"+-:");
+            foreach (PropertyInfo property in properties)
+            {
+                var val = property.GetValue(savePatt);
+                Debug.Log("david1");
+                Debug.Log("david0-+:"+property.Name+":+-");
+                Debug.Log("david-+:"+nameof(val)+":+-");
+            }  
+            /*foreach (var VARIABLE in COLLECTION)
+            {
+                
+            }*/
+        }
+        else
+        {
+            Debug.Log("david SetupUI()2");
+        }
+       
+    }
+
+ [System.Serializable]
+    public class SavePattern
+    {
+        public string AgencyNumber { get; set; }
+        public bool Description { get; set; }
+        public bool Establishment { get; set; }
+
+        /*public DocumentA() 
+        {
+            AgencyNumber = "";
+        }*/
+    }
+
+
+//Dynamic Variable2 Field:-------------------------------------------------------------------------------
+using System.Reflection;
+[SerializeField]private Video_ VideoProperty;
+
+ [ContextMenu("SetupUI()")]
+    public override void SetupUI()
+    {
+        Debug.Log("david SetupUI()");   
+        
+        if (VideoProperty != null)
+        {
+            
+            var t = typeof(Video_);
+            List<string> fieldNames = new List<string>(t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Select(x => x.Name));
+            foreach (var VARIABLE in fieldNames)
+            {
+                Debug.Log("david0-+:"+VARIABLE+":+-");
+ 		Debug.Log("david1-+:"+VideoProperty.GetType().GetField(VARIABLE).GetValue(VideoProperty)+":+-");
+            } 
+foreach (var VARIABLE in Labels)
+            {
+                var theData = (
+                            from data in fieldNames
+                            where data.Equals(VARIABLE.VarName)
+                            select data
+                        ).FirstOrDefault();
+                VARIABLE.Label.text = VideoProperty.GetType().GetField(VARIABLE.VarName).GetValue(VideoProperty).ToString();
+            }
+        }
+        else
+        {
+            Debug.Log("david SetupUI()2");
+        }
+
+        
+    }
+
+
+
+//Dynamic Variable3 Field:-------------------------------------------------------------------------------
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
+using System.Reflection;
+public class VideoButton : MenuButton
+{
+    [SerializeField]public VideoProperty VideoProperty;
+
+    public List<MyLabel> Labels;
+
+    private Action<int> _onModuleButtonClick;
+    public VideoProperty Video_Setter
+    {
+        get => VideoProperty;
+        set
+        {
+            VideoProperty = value;
+        }
+    }
+
+    public void SetLabel(string varname, string label)
+    {
+        var theData = (
+            from data in Labels
+            where data.VarName.Equals(varname)
+            select data.Label
+        ).FirstOrDefault();
+        theData.text = label;
+    }
+   
+    public override void SetupUI()
+    {
+        if (VideoProperty != null)
+        {
+            var t = typeof(VideoProperty);
+            List<string> fieldNames = new List<string>(t.GetFields().Select(x => x.Name));
+
+            foreach (var VARIABLE in Labels)
+            {
+                var theData = (
+                            from data in fieldNames
+                            where data.Equals(VARIABLE.VarName)
+                            select data
+                        ).FirstOrDefault();
+                VARIABLE.Label.text = VideoProperty.GetType().GetField(VARIABLE.VarName).GetValue(VideoProperty).ToString();
+            }
+        }
+    }
+
+    public void ModuleButtonClickEvent(Action<int> onClickModule)
+    {
+        if (_onModuleButtonClick == null)
+            _onModuleButtonClick += onClickModule;
+    }
+
+    public void OnClickModuleMenuButton()
+    {
+        _onModuleButtonClick?.Invoke(MenuData.ID);
+
+        var data = (Module)MenuData;
+        //Debug.Log(data.scenario_name + " From Dashboard Instruktur");
+    }
+    
+    [Serializable]
+    public class MyLabel
+    {
+        public string VarName;
+        public TextMeshProUGUI Label;
+    }
+}
+
+//AssetDatabase-------------------------------------------------------------------------------
+AssetDatabase.LoadAssetAtPath(path)
+AssetDatabase.GUIDToAssetPath
+AssetDatabase.FindAssets
+
+
+//Pool Adv-------------------------------------------------------------------------------
+
+//#1 Init
+//#2 Instantiate or active gameobject with .Get
+//#3 Release to deactive gameobject
+//#4 need List
+ 
+using UnityEngine.Pool;
+//-----------------------------------
+
+
+
+ [SerializeField] private IObjectPool<GameObject> _objectPool;
+        [SerializeField] private List<GameObject> _pool=new List<GameObject>();
+        
+        public bool collectionChecks = true;
+        public int maxPoolSize = 10;
+
+//-----------------------------------
+
+
+[ContextMenu("TestSpawn()")]
+        void TestSpawn()
+        {
+            //Spawn();
+            InitializeObjectPool();
+        }
+        
+        [ContextMenu("TestSpawn1()")]
+        void TestSpawn1()
+        {
+            var a = _objectPool.Get();
+
+            if (!_pool.Contains(a))
+            {
+                _pool.Add(a);
+            }
+          
+            
+        }
+        [ContextMenu("TestSpawn2()")]
+        void TestSpawn2()
+        {
+            foreach (var VARIABLE in _pool)
+            {
+                _objectPool.Release(VARIABLE);
+            }
+           
+        }
+        
+        public void InitializeObjectPool()
+        {
+            _objectPool = new ObjectPool<GameObject>(createFunc: () =>
+            {
+                return CreatePooledItem(); //Instantiate(new GameObject());
+            },OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, collectionChecks, 10, maxPoolSize);
+        }
+        
+        
+        GameObject CreatePooledItem()
+        {
+            var go = new GameObject("Pooled Particle System");
+            
+
+            // This is used to return ParticleSystems to the pool when they have stopped.
+            
+            /*var returnToPool = go.AddComponent<ReturnToPool>();
+            returnToPool.pool = Pool;*/
+
+            return go;
+        }
+        // Called when an item is taken from the pool using Get
+        void OnTakeFromPool(GameObject system)
+        {
+            system.gameObject.SetActive(true);
+        }
+        // Called when an item is returned to the pool using Release
+        void OnReturnedToPool(GameObject system)
+        {
+            system.gameObject.SetActive(false);
+        }
+        void OnDestroyPoolObject(GameObject system)
+        {
+            Destroy(system.gameObject);
+        }
+
+
+//-----------------------------------
+
+//Publish Subscribe-------------------------------------------------------------------------------
+
+//Input:
+void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E)) 
+        {
+            transform.GetComponent<Publisher> ().PublishTheEvent ();
+        }
+    }
+
+//-----------------------------------
+//Publish
+public class Publisher : MonoBehaviour
+{
+ public delegate void PublishEvent ();
+    public static event PublishEvent Publish;
+
+    public void PublishTheEvent ()
+    {
+        if (Publish != null)
+            Publish ();
+    }
+    
+}
+//-----------------------------------
+//Subscibe:(Listen)
+public class Subscriber : MonoBehaviour
+{
+void OnEnable ()
+    {
+        Publisher.Publish += Destroy;
+    }
+
+    void OnDisable ()
+    {
+        Publisher.Publish -= Destroy;
+    }
+
+    void Destroy ()
+    {
+        Destroy (transform.gameObject);
+    }
+}
+
+//-----------------------------------
+//Strange class type??
+public (bool exsist, string sceneName) CheckSceneExistence()
+    {
+        var targetScenes = Array.Empty<string>();
+        try
+        {
+            targetScenes = _asBunContainer.GetAllScenePaths();
+        }
+        catch (Exception e)
+        {
+            return (false, string.Empty);
+        }
+
+        if (targetScenes.Length == 0)
+            return (false, string.Empty);
+
+        var targetScene = System.IO.Path.GetFileNameWithoutExtension(targetScenes[0]);
+        return (true, targetScene);
+    }
+
+
+
+
+
+//Copyright Example-------------------------------------------------------------------------------
+/// <summary>
+/// Copyright 2023 Arief Falah.
+/// Not yet put in a git branch.
+/// This script read and/or parse JsonScenario, JsonObjectList, and Tools
+/// 
+/// To use this script,
+/// first your script should listen to OnScenarioLoaded
+/// to deal with the output,
+/// then you either call from:
+/// 1. LoadTextAssetFromResources()
+/// 2. LoadTextAssetFromDataPath()
+/// 3. GetModuleData(url)
+/// To start retrieving the data
+/// </summary>

@@ -1,0 +1,365 @@
+/// <summary>
+/// make the map then to json
+/// translate json to map
+/// use foreach for list
+/// </summary>
+
+//Script Insert-------------------------------------------------------------------------------
+[Serializable]
+public class parent
+{
+public string name;
+    public string surname;   
+}
+
+public parent parent;
+
+parent.name = "peter";
+parent.surname= "doe";
+
+var hasilJson = JsonUtility.ToJson(parent, false);
+        Debug.Log(hasilJson);
+
+//-------------------------------------------------------------------------------
+Json array:
+
+[Serializable]
+public class parent
+{
+public string name;
+    public string surname;   
+}
+
+
+parent[] pM=new parent[3];
+         pM[0]=new parent();
+         pM[0].name = "peter";
+         pM[0].surname= "doe";
+         
+         pM[1]=new parent();
+         pM[1].name = "john'";
+         pM[1].surname= "doe";
+         
+         pM[2]=new parent();
+         pM[2].name = "james";
+         pM[2].surname= "sullivan";
+        
+var hasilJson = JsonHelper.ToJson(pM, true);
+         Debug.Log(hasilJson);
+
+//JsonHelper-------------------------------------------------------------------------------
+
+public static class JsonHelper
+    {
+        public static T[] FromJson<T>(string json)
+        {
+            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+            return wrapper.Items;
+        }
+
+        public static string ToJson<T>(T[] array)
+        {
+            Wrapper<T> wrapper = new Wrapper<T>();
+            wrapper.Items = array;
+            return JsonUtility.ToJson(wrapper);
+        }
+
+        public static string ToJson<T>(T[] array, bool prettyPrint)
+        {
+            Wrapper<T> wrapper = new Wrapper<T>();
+            wrapper.Items = array;
+            return JsonUtility.ToJson(wrapper, prettyPrint);
+        }
+
+        [System.Serializable]
+        private class Wrapper<T>
+        {
+            public T[] Items;
+        }
+    }
+//-------------------------------------------------------------------------------
+
+Module[]Mod = JsonHelper.FromJson<Module>("{\"Items\":" +text.text+"}");
+      for (int i = 0; i < Mod.Length; i++)
+      {
+          ResultText.text = Mod[i].module;
+      }
+//-------------------------------------------------------------------------------
+[
+    {
+        "id":0,
+        "lesson":"ini lesson",
+        "chapter":"ini chapter",
+        "module":"Anda benar"
+    }
+]
+
+
+
+
+
+//Scriptable object-------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "Repository History", menuName = "Repository/Repository History")]
+public class HistoryRepository :ScriptableObject//RuntimeSets.RuntimeSet<History>
+{
+    //public Log logs;
+    public List<History> History;
+    
+}
+
+[Serializable]
+public class History
+{
+    //public List<DataLog> Items;
+
+    public string materi_id;
+    public string menu_id;
+    public string chapter_id;
+    public int qustion_id;
+    public int area_id;
+    public int contentAreaIndex;
+    public int Scenario_Id;
+    public string Duration_taken;
+    public string Location;
+    public string Area;
+}
+//Write Json-------------------------------------------------------------------------------
+
+[SerializeField] private string HistoryPath = Application.streamingAssetsPath + "/History.json";
+
+
+ private void WriteHistory()
+    {
+        var hasilJson = JsonUtility.ToJson(_historyRepository, true);
+        Debug.Log(hasilJson);
+        using (StreamWriter stream = new StreamWriter(HistoryPath))
+        {
+            stream.Write(hasilJson);
+        }
+    }
+//Hasil-------------------------------------------------------------------------------
+
+{
+    "History": [
+        {
+            "materi_id": "9",
+            "menu_id": "1",
+            "chapter_id": "1",
+            "qustion_id": 5,
+            "area_id": 18,
+            "contentAreaIndex": 2,
+            "Scenario_Id": 0,
+            "Duration_taken": "00:00:00",
+            "Location": "Airport",
+            "Area": "Toilet"
+        },
+        {
+            "materi_id": "9",
+            "menu_id": "1",
+            "chapter_id": "1",
+            "qustion_id": 5,
+            "area_id": 18,
+            "contentAreaIndex": 2,
+            "Scenario_Id": 0,
+            "Duration_taken": "00:00:00",
+            "Location": "Airport",
+            "Area": "Toilet"
+        }
+    ]
+}
+
+
+//---------------------------------------------------
+private string InternalGenerateJSON()
+    {
+        var modulestoparse = new ListOfModule();// Important------------
+        var modulscount = LisfOfModuleItems.Count;
+
+        if (modulscount == 0)
+        {
+            modulestoparse.Items = new List<ModuleForEditor>();// Important------------
+            var modul = new ModuleForEditor();
+            modul.id = 1;
+            modul.chapter_id = 1;
+            modul.lesson_id = 1;
+            
+            modul.skenario = new ListOfScenario();
+            modul.skenario.Items = _scenario.GetScenarioSteps();
+
+            modulestoparse.Items.Add(modul);
+        }
+        else
+        {
+            modulestoparse.Items = LisfOfModuleItems;
+            for (int i = 0; i < modulscount; i++)
+            {
+                //if (LisfOfModuleItems[i].id == EditedModule)
+                //{
+                    modulestoparse.Items[i].skenario.Items =  _scenario.GetScenarioSteps();
+                //}
+            }
+        }
+
+        var prettyprint = true;
+        var finaljson = JsonUtility.ToJson(modulestoparse, prettyprint);
+        if (prettyprint)
+        {
+            finaljson = finaljson.Remove(0, 14);
+            finaljson = finaljson.Remove(finaljson.Length - 1);
+        }
+        else
+        {
+            finaljson = finaljson.Remove(0, 9);
+            finaljson = finaljson.Remove(finaljson.Length - 1);
+        }
+        Debug.Log("David InternalGenerateJSON()"+finaljson);
+
+        return finaljson;
+    }
+//Read-------------------------------------------------------------------------------
+public class HistoryData
+    {
+        public List<History> History;
+    }
+
+private void ReadHistory()
+    {
+        using (StreamReader stream = new StreamReader(HistoryPath))
+        {
+            string json = stream.ReadToEnd();
+            Debug.Log(json);
+            // _historyRepository.SetItems(json, DataReceived);
+            HistoryData data = JsonUtility.FromJson<HistoryData>(json);
+	    // foreach use map class in object collection
+            foreach (History item in data.History)
+            {
+                /*Debug.Log("Duration taken: " + item.Duration_taken);
+                Debug.Log("Location: " + item.Location);
+                Debug.Log("Area: " + item.Area);*/
+
+                _historyRepository.History.Add(new History
+                {
+                    materi_id = _dataVariable.materi_id,
+                    menu_id = _dataVariable.menu_id,
+                    chapter_id = _dataVariable.chapter_id,
+                    qustion_id = _dataVariable.qustion_id,
+                    area_id = _dataVariable.area_id,
+                    contentAreaIndex = _dataVariable.contentAreaIndex,
+                    Duration_taken = item.Duration_taken,
+                    Location = item.Location, // _dataVariable.chapterid
+                    Area = item.Area // _dataVariable.areaid
+                });
+
+                GenerateHistory(item.Duration_taken,
+                    item.Location,
+                    item.Area);
+            }
+        }
+    }
+
+//Read Partial-------------------------------------------------------------------------------
+public class HistoryData
+    {
+        public List<History2> History;
+    }
+    
+    [Serializable]
+    public class History2
+    {
+        public string menu_id;
+    }
+ private void ReadHistory()
+    {
+        using (StreamReader stream = new StreamReader(HistoryPath))
+        {
+            string json = stream.ReadToEnd();
+            Debug.Log(json);
+            HistoryData data2 = JsonUtility.FromJson<HistoryData>(json);
+            Debug.Log(data2);
+            foreach (History2 item in data2.History)
+            {
+                Debug.Log("jtest"+item.menu_id);
+            }
+            Debug.Log("jtestFinish");  
+        }
+    }
+
+
+
+//Annoying Box!!!-------------------------------------------------------------------------------
+//The content of json must be put in list or list class
+JsonText:
+[
+    {
+        "id":0,
+        "lesson":"ini lesson",
+        "chapter":"ini chapter",
+        "module":"Anda benar"
+    }
+]
+
+//Json map
+
+[Serializable]
+public class AnnoyingBoxList
+{
+    public List<AnnoyingBox> Items;
+}
+
+[Serializable]
+public class AnnoyingBox
+{
+    public int id;
+    public string lesson;
+    public string chapter;
+    public string module;
+}
+
+//Class
+ public List<AnnoyingBox> AnnoyingBoxItems=new List<AnnoyingBox>();
+
+[ContextMenu("GetStart()")]
+    void GetJson()
+    {      
+        //JsonText 
+        string json ="{\"Items\" : " + JsonText + "}";
+        
+        Debug.Log(json);        
+        
+        AnnoyingBoxList Result = JsonUtility.FromJson<AnnoyingBoxList>(json);
+
+         foreach (var VARIABLE in Result.Items)
+        {
+            AnnoyingBoxItems.Add(VARIABLE);
+        }
+
+        /*Debug.Log(Result.Items[0]);*/
+    }
+
+//Clear Data String-------------------------------------------------------------------------------
+private string GetMethodClearData(string x)
+    {
+        // Filter Data
+        Debug.Log("david get: " + x);
+
+        var lines = x.Split('\"' + "data" + '\"' + ":");
+
+        Debug.Log("david get2: " + lines[1]);
+
+        var lines2 = lines[1].Split("]" + ",");
+
+        Debug.Log("david get3: " + lines2[0]);
+
+        x = lines2[0] + "]";
+
+        return x;
+    }
+
+// noMap-------------------------------------------------------------------------------
+
+ListOfObjects = JsonConvert.SerializeObject(NewModeListOfObjects)
+var ObjectList = JsonConvert.DeserializeObject<ListOfObjectList>(json2);

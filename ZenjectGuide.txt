@@ -1,0 +1,152 @@
+using UnityEngine;
+using Zenject;
+
+public class DavidTestInstaller : MonoInstaller
+{
+    [SerializeField] private OsciloscopeManager Osciloscope;
+    
+
+Ex Installer:--------------------------------------------------------------------
+    public override void InstallBindings()
+    { 
+
+// From Instance--------------------------------------------------------------------
+        SignalBusInstaller.Install(Container);
+        
+        Container.BindInstance(Osciloscope);
+        
+        Container.BindInterfacesTo<OsciloscopeManager>().FromInstance(Osciloscope);
+
+//Model Constructor--------------------------------------------------------------------
+	MultimeterModel multimeterModel = new MultimeterModel();
+
+	Container.Bind<MultimeterModel>().FromInstance(multimeterModel).AsSingle();//.WhenInjectedInto<MultimeterController>();
+
+        Container.Bind<IMultimeterModelGetter>().FromInstance(multimeterModel).AsSingle();
+
+//From Scene--------------------------------------------------------------------
+	Container.Bind<MultimeterClickInputHandler>().FromComponentInHierarchy().AsSingle();//.WhenInjectedInto<MultimeterView>();
+
+//For Signal Subscibe & Fire--------------------------------------------------------------------
+	Container.DeclareSignal<ClickKnobSignal>().OptionalSubscriber();
+
+//Bind Class & Interface--------------------------------------------------------------------
+	Container.BindInterfacesAndSelfTo<MultimeterController>().AsSingle();
+    }
+}
+
+
+Ex Signal:--------------------------------------------------------------------
+
+using UnityEngine;
+
+public class ClickKnobSignal
+{
+    public bool IsForward { get; private set; }
+
+    public ClickKnobSignal(bool isForward)
+    {
+        IsForward = isForward;
+    }
+}
+
+Ex Signal1:
+
+    private void OnEnable()
+    {
+        _signalBus.Subscribe<OnMultimeterReadinessSignal>(OnReceiveMultimeterReadinessSignal);
+        _signalBus.Subscribe<UpdateMultimeterStateSignal>(RotateKnob);
+        _signalBus.Subscribe<UpdateMultimeterValueSignal>(UpdateMultimeterTextValue);
+    }
+
+    private void OnDisable()
+    {
+        _signalBus.TryUnsubscribe<OnMultimeterReadinessSignal>(OnReceiveMultimeterReadinessSignal);
+        _signalBus.TryUnsubscribe<UpdateMultimeterStateSignal>(RotateKnob);
+        _signalBus.TryUnsubscribe<UpdateMultimeterValueSignal>(UpdateMultimeterTextValue);
+    }
+
+    public void DetectKnobInput()
+    {
+        if(Input.GetMouseButtonUp(0) && MouseOnKnob())
+        {
+            Debug.Log("a");
+            _signalBus.Fire(new ClickKnobSignal(false));
+        }
+        else if(Input.GetMouseButtonUp(1) && MouseOnKnob())
+        {
+            Debug.Log("b");
+            _signalBus.Fire(new ClickKnobSignal(true));
+        }
+    }
+
+
+// Guide --------------------------------------------------------------------
+
+1. Contract Types (What is requested)
+
+• Container.Bind<T>(): Binds a concrete class or interface directly.
+• Container.Bind<TContract>().To<TConcrete>(): Maps an interface or base class (TContract) to a concrete implementation (TConcrete).
+• Container.BindInterfacesTo<T>(): Automatically binds all interfaces implemented by T to T (does not bind T itself).
+• Container.BindInterfacesAndSelfTo<T>(): Binds all interfaces implemented by T and T itself.
+• Container.BindInstance(instance): Shorthand for Container.Bind<T>().FromInstance(instance).
+• Container.Bind(typeof(IFoo), typeof(IBar)).To(typeof(Foo)): Non-generic overload for binding multiple types or open generics (e.g., typeof(IRepo<>)).
+• Container.BindFactory<TParam1, ..., TValue, TFactory>(): Binds a custom dynamic factory for spawning objects at runtime.
+• Container.BindMemoryPool<TItem, TPool>(): Binds an object pool for reusing instances instead of destroying/instantiating them.
+• Container.BindSignal<TSignal>(): Binds a Zenject Signal (requires SignalBusInstaller.Install(Container)).
+
+2. Construction Methods (From... — How it is created)
+
+If omitted, Zenject defaults to FromNew() for standard C# classes.
+
+Standard C# Objects
+
+• .FromNew(): Instantiates via the standard C# constructor (default).
+• .FromInstance(obj): Uses an existing object instance (commonly used for [SerializeField] references in a MonoInstaller).
+• .FromMethod(ctx => new Foo()): Creates the object using a custom delegate/lambda.
+• .FromMethodMultiple(ctx => list): Returns multiple instances to satisfy list/array injections (List<IFoo>).
+• .FromResolve(): Resolves the instance from another binding already registered in the container.
+• .FromResolveGetter<TObj>(obj => obj.Property): Resolves an existing object TObj and injects a specific property or field from it.
+• .FromSubContainerResolve(): Resolves the dependency from an isolated sub-container (via .ByInstaller<T>(), .ByNewGameObjectMethod(...), or .ByNewPrefab(...)).
+
+Unity MonoBehaviour & Prefabs
+
+• .FromComponentInHierarchy(): Searches the active scene hierarchy for an existing component.
+• .FromComponentsInHierarchy(): Finds all matching components in the scene (for List<T> injections).
+• .FromNewComponentOn(gameObject): Attaches a new component to an existing GameObject.
+• .FromNewComponentOnNewGameObject(): Creates an empty GameObject in the scene and attaches the component to it.
+• .FromComponentInNewPrefab(prefab): Instantiates a prefab and grabs the component from it.
+• .FromComponentsInNewPrefab(prefab): Instantiates a prefab and grabs all matching components on it.
+• .FromComponentInNewPrefabResource("Path/To/Prefab"): Loads a prefab from a Resources folder, instantiates it, and grabs the component.
+• .FromNewComponentSibling(): Attaches the component to the same GameObject as the object being injected into (only valid on MonoBehaviour targets).
+• .FromComponentInParents() / .FromComponentInChildren(): Searches up or down the Transform hierarchy of the target MonoBehaviour.
+
+Unity ScriptableObject
+
+• .FromScriptableObject(soInstance): Clones an existing ScriptableObject reference.
+• .FromNewScriptableObjectResource("Path/To/SO"): Loads and instantiates a ScriptableObject from Resources.
+• .FromScriptableObjectResource("Path/To/SO"): Uses the asset directly from Resources without cloning it.
+
+3. Scope (Lifetime & Caching)
+
+• .AsSingle(): Creates one shared instance across the entire container (singleton behavior within that context).
+• .AsTransient(): Creates a new instance every single time the dependency is injected (default if omitted).
+• .AsCached(): Reuses the same instance within a single binding statement, even if multiple contracts are bound in that statement (unlike AsSingle(), it won't throw an error if another separate Bind statement also binds the same concrete type).
+
+4. Modifiers, Conditions & Execution Control
+
+• .WithId("MyId"): Assigns a string or enum identifier. Consumers must request it using [Inject(Id = "MyId")].
+• .WithArguments(arg1, arg2): Passes explicit runtime parameters into the constructor or [Inject] method, bypassing container resolution for those parameters.
+• .NonLazy(): Forces Zenject to instantiate the object immediately when the context initializes, rather than waiting until another class requests it.
+• .Lazy(): Explicitly delays instantiation until first requested (default).
+• .IfNotBound(): Only applies this binding if no prior binding exists for the contract type (useful for fallback/default bindings).
+• .When(ctx => ...): Conditional binding based on the InjectContext (e.g., .WhenInjectedInto<PlayerController>() or .When(c => c.ParentContext != null)).
+• .OnInstantiated<T>((ctx, obj) => ...): Executes a callback immediately after the instance is constructed and injected.
+• .CopyIntoAllSubContainers() / .MoveIntoAllSubContainers(): Propagates the binding down into child sub-containers.
+
+5. Running Other Installers
+
+To organize large setups, you can trigger sub-installers from inside a primary installer's InstallBindings() method:
+• OtherInstaller.Install(Container): Executes a standard C# Installer<OtherInstaller>.
+• Container.Install<OtherInstaller>(): Alternative syntax for running a standard C# installer.
+• OtherInstallerWithArgs.Install(Container, param1, param2): Executes an Installer<TParam1, TParam2, TDerived> with runtime arguments.

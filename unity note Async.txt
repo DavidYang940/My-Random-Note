@@ -1,0 +1,214 @@
+/// <summary>
+    /// Test async 1(Method to async no await)(synchronous)
+    /// </summary>
+    [ContextMenu("test1")]
+    void test1()
+    {
+        Debug.Log("Start of the method test1");
+
+        Count();
+
+        Debug.Log("selesai test1");
+    }
+
+    async void Count()
+    {
+        for (int i = 0; i < 500; i++)
+        {
+            Debug.Log(i);
+        }
+    }
+
+
+    /// <summary>
+    /// Test async 2(async with await)(asynchronous)
+    /// </summary>
+    [ContextMenu("test2")]
+    void test2()
+    {
+        Debug.Log("Start of the method test2");
+
+        test2async();
+
+        Debug.Log("selesai test2");
+    }
+
+    async void test2async()
+    {
+        await Task.Run(() => Count1());
+    }
+
+    void Count1()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Debug.Log(i);
+        }
+    }
+
+    /// <summary>
+    /// async to async (synchronous)
+    /// </summary>
+    [ContextMenu("test3")]
+    async 
+        void test3()
+    {
+        Debug.Log("Start of the method test3");
+        await Tasktest3async();//run 1.
+        //await Task.Run(() => test3async());
+        //await Task.Run(() => test3method());
+        //test3method();
+        test3async();//run 3.
+        Debug.Log("selesai test3");//run 2.
+    }
+
+    
+    async Task Tasktest3async()
+    {
+        await Task.Yield();
+        int randomNumber2 = Random.Range(0, 100); 
+        
+        for (int i = 0; i < 1000; i++)
+        {
+            Debug.Log("Tasktest3async()"+i);
+            //await Task.Delay(50);
+        }
+    }
+    
+    async void test3async()
+    { 
+        await Task.Yield();
+        int randomNumber2 = Random.Range(0, 100); 
+        for (int i = 0; i < 500; i++)
+        {
+            Debug.Log(i);
+        }
+    }
+    
+    void test3method()
+    { 
+        int randomNumber2 = Random.Range(0, 100); 
+        for (int i = 0; i < 500; i++)
+        {
+            Debug.Log(i);
+        }
+    }
+
+    /// <summary>
+    /// async to async (asynchronous)
+    /// </summary>
+    [ContextMenu("test4")]
+    async void test4()
+    {
+        Debug.Log("Start of the method test4---------------------");
+
+        await Task.Run(() =>test4async());
+
+        Debug.Log("Middle test4---------------------");
+
+        await Task.Run(() => Count2());
+
+        Debug.Log("selesai test4---------------------");
+    }
+
+    async void test4async()
+    {
+        await Task.Yield();
+        for (int i = 0; i < 150; i++)
+        {
+            Debug.Log("test4async():"+i);
+        }
+    }
+
+    async void Count2()
+    {
+        //await Task.Yield();
+
+        for (int i = 0; i < 150; i++)
+        {
+            Debug.Log("Count2:" + i);
+        }
+
+        await Task.Yield();
+        
+        for (int i = 0; i < 150; i++)
+        {
+            Debug.Log("Count2.2:" + i);
+        }
+    }
+    
+    
+    /// <summary>
+    /// async to async (asynchronous misc)
+    /// </summary>
+    [ContextMenu("test5")]
+    async void test5()
+    {
+        Debug.Log("Start of the method test4");
+
+        test5async();
+
+        Debug.Log("Middle test5---------------------");
+
+        await Task.Run(() => Count3());
+        
+        Debug.Log("Middle test5.2---------------------");
+        
+        Count4();
+        
+        Debug.Log("selesai test4---------------------");
+    }
+
+    async void test5async()
+    {
+        await Task.Yield();
+        for (int i = 0; i < 300; i++)
+        {
+            Debug.Log("test5async():"+i);
+        }
+    }
+
+    async void Count3()
+    {
+        //await Task.Yield();
+
+        for (int i = 0; i < 300; i++)
+        {
+            Debug.Log("Count3:" + i);
+        }
+
+        await Task.Yield();
+        
+        for (int i = 0; i < 300; i++)
+        {
+            Debug.Log("Count3.2:" + i);
+        }
+    }
+    void Count4()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Debug.Log("Count4:" + i);
+        }
+    }
+///---------------------------------------------------------------------------
+// await UniTask.WaitForSeconds(.5f);
+
+
+
+
+
+
+
+///Looping per frame---------------------------------------------------------------------------
+public async void SetProgress1()
+    {
+        while (progress!=1)
+        {
+            Debug.Log("SetProgress():"+AssetBundleLoaderTest2.Progress());
+            progress = AssetBundleLoaderTest2.Progress();
+            await Task.Yield();
+	    await UniTask.NextFrame();
+
+        }
+    }
