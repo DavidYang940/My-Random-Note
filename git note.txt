@@ -1,0 +1,87 @@
+1. git clone Yourhttps://your project/
+2. masuk ke dir clone nya
+3. git config --local user.name "Nama Lengkap"
+4. git config --local user.email "nama@YourName.co.id"
+
+3. git config --global user.name "Nama Lengkap"
+4. git config --global user.email "nama@YourName.co.id"
+
+git checkout develop2
+git pull -f origin develop2
+
+git merge --no-ff feat/utility-script -m"update utility"
+git merge --no-ff feat/utility-function -m "merge:update utility"
+
+git push --set-upstream origin feat/video-system
+git checkout -b feat/video-system
+
+esc
+:q
+:wq
+
+
+#revert publish Commit
+git revert --no-commit 0d1d7fc3..HEAD
+git commit
+
+#revert unpublish Commit
+git reset --hard 0d1d7fc32
+
+#reset merge
+git reset --hard HEAD^
+
+#reset Prev Head
+git reset ORIG_HEAD
+
+#reset Top Head
+git reset 'HEAD@{1}'
+
+git merge --abort
+
+git branch -r
+
+git clean -f -d
+
+#cara ganti token 
+git remote -v
+origin  Yourhttps://your project/Project.git (fetch)
+origin  Yourhttps://your project/Project.git (push)
+
+git remote set-url origin Yourhttps://your project/Project.git
+
+#revert from merge
+git revert <commit_hash>-m "merge:update utility"
+
+# delete Branch from local
+git push origin --delete branch-to-delete
+
+# overwrite origin
+git push --force origin feat/load-scene
+
+#To delete a local branch that has been fully merged, you can use git branch -d:
+git branch -d branch-to-delete
+
+#To delete a local branch that has not been fully merged (i.e. force delete), you must use git branch -D:
+git branch -D branch-to-delete
+
+
+#Stash
+git stash
+git stash pop
+
+#gitignore
+/[Aa]ssets/Plugins/
+*.meta
+
+
+# cherry Pick
+
+#1.Make sure you are on the branch you want to apply the commit to.
+git switch master
+
+#2.Execute the following:
+git cherry-pick <commit-hash>
+
+
+
+
